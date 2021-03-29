@@ -66,9 +66,77 @@ InfoNCE是另一种测量互信息的下界的方法，假设$\boldsymbol{h}\_{i
 ![InfoNCE](https://cdn.mathpix.com/snip/images/IUNJZLySuknJ-DIk7JfcAtyQN1pX6umTPKFnNxG_10c.original.fullsize.png)
 $\boldsymbol{K}$是有N个随机变量组成，这些随机变量独立采样于graph data distribution$\mathcal{P}$。$h\_i$和$h\_j$是$(\boldsymbol{A}, \boldsymbol{X})$这个样本的i-th和j-th个view的representation，$h\_j^{'}$是$(\boldsymbol{A^{'}}, \boldsymbol{X^{'}})$样本的j-th个view的representation。
 
-5. Non-Bound Mutual Information Estimators
+Intuitively, the optimization of InfoNCE loss aims to score the agreement between $h\_i$ and $h\_j$ of views from the same
+instance $x$ higher than between $h\_i$ and $h\_j^{'}$ from the rest N negative samples B \ {x}.
 
-6. Projection Head: Parametric Estimation
+2. Non-Bound Mutual Information Estimators
+还存在一些目标函数，它们能够增加互信息，但是它们没有被有力地证实为是互信息的下界，甚至有些方法没有被证实为在最大化互信息。
+举个例子，Jiao et al[]提出了最小化triplet margin loss：
+$$
+\begin{aligned}
+\mathcal{L}\_{\text {triplet }}=\mathbb{E}\_{\left[(\boldsymbol{A}, \boldsymbol{X}),\left(\boldsymbol{A}^{\prime}, \boldsymbol{X}^{\prime}\right)\right] \sim \mathcal{P} \times \mathcal{P}} &\left[\max \left\{\mathcal{D}\left(\boldsymbol{h}\_{i}, \boldsymbol{h}\_{j}\right)\right.\right.\\
+&\left.\left.-\mathcal{D}\left(\boldsymbol{h}\_{i}, \boldsymbol{h}\_{j}^{\prime}\right)+\epsilon, 0\right\}\right]
+\end{aligned}
+$$
+
+3. Projection Head: Parametric Estimation
+The projection head为证实能显著地增强CL的性能，我们认为包含projection head的MI estimator是parametric estimator，而不包含projection head的estimator是non-parametric estimator，为什么使用projection head的效果会更好，因为parametric estimator能得到更好的MI估计。
+
+4. Comparison and Discussion of Different Objectives
+Hjelm et al[]通过实验证明InfoNCE在大多数情况下性能会优于JS estimator，但是InfoNCE estimator要求有大量的负样本，否则它的效果就不太好，如果batch size比较小的化，JS estimator会是一个更好的选择。
+
+#### Graph View Generation
+可以大致分为feature transformation，structure transformation，sampling-based transformation。
+
+1. Feature Transformation
+可以公式化为:
+$$
+\mathcal{T}\_{\text {feat }}(\boldsymbol{A}, \boldsymbol{X})=\left(\boldsymbol{A}, \mathcal{T}\_{X}(\boldsymbol{X})\right)
+$$
+, where $\mathcal{T}\_{X}: \mathbb{R}^{|V| \times d} \rightarrow \mathbb{R}^{|V| \times d}$
+目前最常见的是node attribute masking，所有节点的部分attribute会被随机mask掉，公式化为:
+$$
+\mathcal{T}\_{X}^{(m a s k)}(\boldsymbol{X})=\boldsymbol{X} \*\left(\mathbf{1}-\mathbf{1}\_{m}\right)+\boldsymbol{M} \* \mathbf{1}\_{m}
+$$, 其中$\boldsymbol{M}$是噪声矩阵，$\mathbf{1}\_{m}$是masking location indicator matrix。attribute masking不仅只用在contrastive method中，也用在predictive method中。节点属性掩蔽迫使编码器捕获掩蔽属性和未掩蔽上下文属性之间更好的依赖关系，并在编码期间从其上下文恢复掩蔽值。
+
+2. Structure Transformation
+可以公式化为:
+$$
+\mathcal{T}\_{\text {struct }}(\boldsymbol{A}, \boldsymbol{X})=\left(\mathcal{T}\_{A}(\boldsymbol{A}), \boldsymbol{X}\right)
+$$
+, where $\mathcal{T}\_{A}: \mathbb{R}^{|V| \times|V|} \rightarrow \mathbb{R}|V| \times|V|$
+结构的变化主要是对邻接矩阵进行变化，1.在节点对之间随机添加或删除边的边扰动和2.基于从一个节点到另一个节点的可访问性创建新边的图扩散。
+**Edge perturbation**:
+$$
+\mathcal{T}_{A}^{(p e r t)}(\boldsymbol{A})=\boldsymbol{A} *\left(\mathbf{1}-\mathbf{1}_{p}\right)+(\mathbf{1}-\boldsymbol{A}) * \mathbf{1}_{p}
+$$
+**Diffusion**:
+基于random walk构建节点之间新的链接，旨在产生graph的全局的view $(\boldsymbol{S}, \boldsymbol{X})$以对比局部的view $(\boldsymbol{A}, \boldsymbol{X})$
+Graph diffusion的两种具体的方法有heat kernel $\mathcal{T}\_{A}^{\text {(heat) }}$和Personalized PageRank $\mathcal{T}\_{A}^{\text {(PPR) }}$
+$$
+\begin{array}{c}
+\mathcal{T}_{A}^{(h e a t)}(\boldsymbol{A})=\exp \left(t \boldsymbol{A} \boldsymbol{D}^{-1}-t\right) \\
+\mathcal{T}_{A}^{(P P R)}(\boldsymbol{A})=\alpha\left(\boldsymbol{I}_{n}-(1-\alpha) \boldsymbol{D}^{-1 / 2} \boldsymbol{A} \boldsymbol{D}^{-1 / 2}\right)^{-1}
+\end{array}
+$$
+α denotes the teleport probability in a random walk and t denotes the diffusion time.
+
+3. Sampling-based transformation
+可以公式化为:
+$$
+\mathcal{T}\_{\text {sample }}(\boldsymbol{A}, \boldsymbol{X})=(\boldsymbol{A}[S ; S], \boldsymbol{X}[S])
+$$
+, where $S \subseteq V$
+获得node subset的方式主要有三种：1. uniform sampling 2. random walk sampling 3. ego-nets sampling
+前两种方法都容易理解，ego-nets sampling是针对每个节点的，采样出每个节点的L-hop的所有邻居节点。以及这些节点构成的邻接矩阵
+$$
+\begin{array}{c}
+\boldsymbol{w}\_{i}=\mathcal{T}\_{i}(\boldsymbol{A}, \boldsymbol{X})=\left(\boldsymbol{A}\left[\mathcal{N}\_{L}\left(v\_{i}\right) ; \mathcal{N}\_{L}\left(v\_{i}\right)\right], \boldsymbol{X}\left[\mathcal{N}\_{L}\left(v\_{i}\right)\right]\right) \\
+\mathcal{N}\_{L}\left(v\_{i}\right)=\left\{v: d\left(v, v\_{i}\right) \leq L\right\}
+\end{array}
+$$
+, L代表node-level encoder的层数
+
 
 ### 2. predictive method
 
