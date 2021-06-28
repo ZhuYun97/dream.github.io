@@ -16,13 +16,13 @@ as for matrix, it is a transformation for a point, vector is an entity, but the 
 
 $$
 \begin{equation}
-\|A\|=\max \_{x} \frac{\|A x\|}{\|x\|}
+\|A\|=\max _{x} \frac{\|A x\|}{\|x\|}
 \end{equation}
 $$
 
 $$
 \begin{equation}
-\left\|A^{-1}\right\|=\max _{y} \frac{\left\|A^{-1} y\right\|}{\|y\|}=1 / \min \_{y} \frac{\|y\|}{\left\|A^{-1} y\right\|}=1 / \min \_{x} \frac{\|A x\|}{\|x\|}
+\left\|A^{-1}\right\|=\max _{y} \frac{\left\|A^{-1} y\right\|}{\|y\|}=1 / \min _{y} \frac{\|y\|}{\left\|A^{-1} y\right\|}=1 / \min _{x} \frac{\|A x\|}{\|x\|}
 \end{equation}
 $$
 
