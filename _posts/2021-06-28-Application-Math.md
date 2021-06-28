@@ -25,8 +25,10 @@ $$
 \left\|A^{-1}\right\|=\max _{y} \frac{\left\|A^{-1} y\right\|}{\|y\|}=1 / \min \_{y} \frac{\|y\|}{\left\|A^{-1} y\right\|}=1 / \min \_{x} \frac{\|A x\|}{\|x\|}
 \end{equation}
 $$
+
 in the three equation, we use $Ay=x$
 the stretching power of $A$ is the same as the squeezing power of $A^{-1}$, we combine both powers to get condition numbers 
+
 $$
 \begin{equation}
 \kappa(A)=\|A\| \cdot\left\|A^{-1}\right\|
@@ -40,16 +42,20 @@ If we add noise $\delta b$ to observation variable, the solution will be $x + \d
 $$
 A(x+\delta x)=b+\delta b 
 $$
+
 $$
 A \delta x=\delta b
 $$
+
 to calculate norm of both sides
 $$
 \|A \delta x\|=\|\delta b\|
 $$
+
 according to (1), we can get $
 \|A\| \geq \frac{\|A \delta x\|}{\|\delta x\|}
 $, combining with (3)
+
 $$
 \begin{equation}
 \|A\|\|\delta x\| \geq\|A \delta x\|=\|\delta b\|
@@ -59,15 +65,18 @@ $$
 accordint to (2) $
 \left\|A^{-1}\right\| \geq 1 / \frac{\|A  x\|}{\| x\|}
 $, combining with $\|Ax\| = \|b\|$
+
 $$
 \begin{equation}
 \|A^{-1} \| \|b \| = \|x \|
 \end{equation}
 $$
+
 Multiply the left and right sides of (4) and (5) to get:
 $$
 \frac{1}{\kappa(A)} \frac{\|\delta b\|}{\|b\|} \leq \frac{\|\delta x\|}{\|x\|}
 $$
+
 the lower bound of the variation of x is influenced by the variation of b. For instance, condition number is 10, the variation of b is 100%, then the variation of  x is at least 10%.
 The up bound can be calculated in the similar way,
 
