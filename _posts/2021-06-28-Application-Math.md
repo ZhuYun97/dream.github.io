@@ -1,14 +1,14 @@
-## Lecture 1
-#### 1. BVP(boundary variables problems)
+## Lecture 1 Introduction and matrix analysis
+### 1. BVP(boundary variables problems)
 - one dimension
 - two dimensions
 
 the matrix is sparse, how to solve this problem
 
-#### 2. Condition numbers
+### 2. Condition numbers
 $\kappa(A)=\|A\| \cdot\left\|A^{-1}\right\|$
 
-##### 2.1 matrix norm
+#### 2.1 matrix norm
 In order to understand condition numbers easily, we should learn some extra knowledges, like matrix norm
 
 vector is a point in the space, vector norm is the length of the vector.
@@ -35,7 +35,7 @@ $$
 \end{equation}
 $$
 
-##### 2.2 stability of linear system
+#### 2.2 stability of linear system
 given a linear equation $Ax=b$, how to evaluate the stability of the equation. $A$ is parameter matrix which is defined by model, $b$ is observation value. If small permutation of $b$ will not make the solution $x$ change rapidly. It can be called as stable equation. In other words, stability measures the ability of a linear equation to resist noise.
 
 If we add noise $\delta b$ to observation variable, the solution will be $x + \delta x$
@@ -91,4 +91,64 @@ $$
 \end{equation}
 $$
 We can conclude that the condition number determine how much the solution $x$ is affected by the noise of the observation value. The bigger condition number is, the less stable $x$ is. 
-##### 2.3 how to calculate condition number
+#### 2.3 how to calculate condition number
+the biggest singular value divided by smallest singular value
+$$
+\begin{equation}
+\kappa(A)=\sigma_{\max } / \sigma_{\min }
+\end{equation}
+$$
+
+### 3. Matrix Decomposition
+- **LU decomposition**: $A = LU$, $A$ is square matrix
+- Cholesky decomposition: $A = U^{T}U$, U is upper triangular with positive diagonal entries. applicable to square, symmetric, positive definite matrix A
+- **QR decomposition**: Q is a m-by-m orthogonal matrix, R is an m-by-n upper triangular matrix
+- Eigendecomposition
+- Schur decomposition
+- **Singular value decomposition**: $A=U \Sigma V^{\top}$
+
+#### 3.1 LU decomposition
+$$\mathbf{A}=\mathbf{L U}$$
+where $\mathbf{L} \in \mathbb{R}^{n \times n}$ is lower triangular and $\mathbf{U} \in \mathbb{R}^{n \times n}$ is upper triangular
+
+LU decomposition doesn't always exist, sometimes we need an extra permutation matrix:
+$$
+\mathbf{P A}=\mathbf{L} \mathbf{U}
+$$
+
+---
+
+Further reading
+- if $\mathbf{A} \in \mathbb{S}^{n \times n}$ has an LU decomposition, then $\mathbf{U}=\mathbf{D L}^{T}$ where D is diagonal
+- Chlesky factorization: if $\mathbf{A} \in \mathbb{S}^{n \times n}$ is PD, it can always be factored as $\mathbf{A}=\mathbf{G} \mathbf{G}^{T}$, G is lower triangular
+- LDM: another way of writing LU, $\mathbf{A}=\mathbf{L} \mathbf{D} \mathbf{M}^{T}$, where $\mathbf{M}=\mathbf{U}^{T} \mathbf{D}^{-1}$
+- LDL: if A is symmetric, LDM can be reduced to $\mathbf{A}=\mathbf{L} \mathbf{D} \mathbf{L}^{T}$
+
+
+
+### 3. Solving Linear Systems
+Problem: compute the solution to $\mathbf{A x}=\mathbf{b}$ in a numerically efficient manner
+
+- the problem is easy if $A^{-1}$ is known
+    - but computing $A^{-1}$ costs computations
+    - how to compute $A^{-1}$ efficiently
+- A is assumed to be a general nonsingular matrix
+
+#### LU to solve linear systems
+Solving $\mathbf{A x}=\mathbf{b}$ can be recast as two linear system problems:
+1. solve $\mathbf{L z}=\mathbf{b}$ for $\mathbf{z}$, and then
+2. solve $\mathbf{U x}=\mathbf{z}$ for $\mathbf{x}$
+
+
+#### 3.1 Gaussian Elimination / the Cholesky decomposition
+Gaussian elimination with pivoting is equivalent to LU decomposition:
+$$
+\Pi A=L \cdot U
+$$
+$\Pi$ is a permutation matrix, L and U are lower and upper triangular.
+
+
+#### 3.2 Iterative solution
+
+## Lecture 2 Iterative Method to Linear equation System
+
