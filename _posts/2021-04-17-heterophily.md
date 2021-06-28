@@ -20,3 +20,20 @@ $\mathbf{r}\_{v}^{(\text {final })}=\operatorname{COMBINE}\left(\mathbf{r}\_{v}^
 - (S3) classification
 $y\_{v}=\arg \max \left\{\operatorname{softmax}\left(\mathbf{r}\_{v}^{(\text {final })} \mathbf{W}\_{c}\right)\right\}$
 
+## 2. Graph Neural Networks with Heterophily
+
+Definition1: Homophily Ratio h
+$h=\frac{\mathbf{e}^{\top} \mathbf{D e}}{\mathbf{e}^{\top} \mathbf{C} \mathbf{e}}$
+
+Definition 2: Compatibility Matrix H
+$\mathbf{H}=\left(\mathbf{Y}^{\top} \mathbf{A} \mathbf{Y}\right) \oslash\left(\mathbf{Y}^{\top} \mathbf{A} \mathbf{E}\right)$
+
+### 2.2 Framework Design
+**(S1) prior belief estimation**
+The goal for the first step is to estimate per ndoe $v \in \mathcal{V}$ a prior belief $\mathbf{b}\_{v} \in \mathbb{R}^{|\mathcal{Y}|}$ of its class label $y\_{v} \in \mathcal{Y}$ from the node features $\mathbf{X}$. We can use any off-the-shelf neural network classifier as the estimator:
+MLP: $\mathbf{R}^{(k)}=\sigma\left(\mathbf{R}^{(k-1)} \mathbf{W}^{(k)}\right)$
+GCN-Cheby: $\mathbf{R}^{(k)}=\sigma\left(\sum_{i=0}^{2} T\_{i}(\tilde{\mathbf{L}}) \mathbf{R}^{(k-1)} \mathbf{W}\_{i}^{(k)}\right)$, $T\_{i}(\tilde{\mathbf{L}})=2 \tilde{\mathbf{L}} T\_{i-1}(\tilde{\mathbf{L}})-T\_{i-2}(\tilde{\mathbf{L}})$, $T\_{0}(\tilde{\mathbf{L}})=\mathbf{I}$ and $T\_{1}(\tilde{\mathbf{L}})=\tilde{\mathbf{L}}=-\mathbf{D}^{-\frac{1}{2}} \mathbf{A} \mathbf{D}^{-\frac{1}{2}}$
+
+the proir belief $\mathbf{B}\_{p}$ of nodes can be given as $\mathbf{B}\_{p}=\operatorname{softmax}\left(\mathbf{R}^{(K)}\right)$ 
+
+**(S2) compatibility-guided propagation**
