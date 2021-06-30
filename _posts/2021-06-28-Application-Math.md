@@ -125,12 +125,13 @@ Further reading
 - LDL: if A is symmetric, LDM can be reduced to $\mathbf{A}=\mathbf{L} \mathbf{D} \mathbf{L}^{T}$
 
 #### 3.2 QR decomposition
-**Orthonormal basis**
+- **Orthonormal basis**
 Let the columns of $U = [u_1, u_2, ..., u_n]$ are orthonormal, $U^{T}U=I$
 Multiplication by $U$ perserves inner products, angles, and distances
-**Gram-Schmidt process**
+- **Gram-Schmidt process**
 ![gs](/assets/img/am/gs.PNG)
 
+then $R = Q^{T}A$
 
 ### 4. Solving Linear Systems
 Problem: compute the solution to $\mathbf{A x}=\mathbf{b}$ in a numerically efficient manner
