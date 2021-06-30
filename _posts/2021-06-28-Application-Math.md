@@ -124,9 +124,15 @@ Further reading
 - LDM: another way of writing LU, $\mathbf{A}=\mathbf{L} \mathbf{D} \mathbf{M}^{T}$, where $\mathbf{M}=\mathbf{U}^{T} \mathbf{D}^{-1}$
 - LDL: if A is symmetric, LDM can be reduced to $\mathbf{A}=\mathbf{L} \mathbf{D} \mathbf{L}^{T}$
 
+#### 3.2 QR decomposition
+**Orthonormal basis**
+Let the columns of $U = [u_1, u_2, ..., u_n]$ are orthonormal, $U^{T}U=I$
+Multiplication by $U$ perserves inner products, angles, and distances
+**Gram-Schmidt process**
+![gs](/assets/img/am/gs.PNG)
 
 
-### 3. Solving Linear Systems
+### 4. Solving Linear Systems
 Problem: compute the solution to $\mathbf{A x}=\mathbf{b}$ in a numerically efficient manner
 
 - the problem is easy if $A^{-1}$ is known
@@ -134,11 +140,38 @@ Problem: compute the solution to $\mathbf{A x}=\mathbf{b}$ in a numerically effi
     - how to compute $A^{-1}$ efficiently
 - A is assumed to be a general nonsingular matrix
 
-#### LU to solve linear systems
+#### 4.1 LU to solve linear systems
 Solving $\mathbf{A x}=\mathbf{b}$ can be recast as two linear system problems:
 1. solve $\mathbf{L z}=\mathbf{b}$ for $\mathbf{z}$, and then
 2. solve $\mathbf{U x}=\mathbf{z}$ for $\mathbf{x}$
 
+#### 4.2 direct solving method for least square method
+Solving $\mathbf{A x}=\mathbf{b}$
+When matrix $\mathbf{A}$ is overdetermined, $\mathbf{b}$ are not in the $span\{\mathbf{A}\}$. In other words, this equation doesn't have exact solution. But we can get a approximate solution $x_{ls}$ which:
+$$
+\min _{x}\|b-A x\|_{2}
+$$
+We can use gradient descent to get optimal value, which corresponds to $\mathbf{A x}-\mathbf{b}$ is vertical to $span\{\mathbf{A}\}$ from geometric perspective.
+The residual vector $mathbf{r} = \mathbf{b} - \mathbf{A x}$ is vertical to span{A}, so it can be formulated as:
+$$
+r^{T}\left(\begin{array}{llll}
+a_{\cdot 1} & a_{\cdot 2} & \cdots & a_{\cdot n}
+\end{array}\right)=r^{T} A=0
+$$
+
+$$
+A^{T} A x=A^{T} b
+$$
+If the column vectors are independent, the solution have unique solution:
+$$
+X=\left(A^{T} A\right)^{-1} A^{T} B
+$$
+
+This method is quite simple, but it has two main weaknesses:
+1. the matrix multiplication will lead to cut-off. Because of cut-off, the matrix $AA^{T}$ will become a singular matrix which doesn't have inverse matrix.
+2. The condition number of $AA^{T}$ is square times than $A$. The system becomes less stable. We can centeralize data in order to add orthogonality of basises.
+
+####
 
 #### 3.1 Gaussian Elimination / the Cholesky decomposition
 Gaussian elimination with pivoting is equivalent to LU decomposition:
