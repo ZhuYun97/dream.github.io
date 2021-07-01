@@ -133,6 +133,19 @@ Multiplication by $U$ perserves inner products, angles, and distances
 
 then $R = Q^{T}A$
 
+- Example(Reduced QR)
+![gs](/assets/img/am/gs2.PNG)
+![gs](/assets/img/am/gs3.PNG)
+
+- The difference between full QR anf reduced QR
+    - The reduced QR only satisfy $Q^TQ=I$ but not sastify $QQ^T=I$
+![gs](/assets/img/am/qr.PNG)
+
+> How to find full Q
+$Q =[Q_1, Q_2]$
+
+
+
 ### 4. Solving Linear Systems
 Problem: compute the solution to $\mathbf{A x}=\mathbf{b}$ in a numerically efficient manner
 
@@ -171,6 +184,12 @@ $$
 This method is quite simple, but it has two main weaknesses:
 1. the matrix multiplication will lead to cut-off. Because of cut-off, the matrix $AA^{T}$ will become a singular matrix which doesn't have inverse matrix.
 2. The condition number of $AA^{T}$ is square times than $A$. The system becomes less stable. We can centeralize data in order to add orthogonality of basises.
+
+#### 4.3 QR to solve linear system
+Both reduced QR and full QR can solve linear system:
+$$
+\hat{R} x=\hat{Q}^{T} b
+$$
 
 ####
 
