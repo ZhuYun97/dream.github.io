@@ -142,7 +142,120 @@ then $R = Q^{T}A$
 ![gs](/assets/img/am/qr.PNG)
 
 > How to find full Q
-$Q =[Q_1, Q_2]$
+full $Q =[Q_1, Q_2]$, how to find $Q_2$ is a main problem, first modify 
+$A$ with $[A, I]$, then process it as reduced QR.
+$R = $$
+\left[\begin{array}{c}
+R_{1} \\
+0
+\end{array}\right]
+$
+
+- **QR decomposition by Householder transformation**
+    - In Gram-Schmidt orthogonalization:
+        - $A \underbrace{R_{1} R_{2} \cdots R_{n}}_{R^{-1}}=Q$
+    - Householder triangularization
+        - a series of elmentary orthogonal matrices $Q_k$ is applied to the left of $A$, so that the resulting matrix:
+        $\underbrace{Q_{n} \cdots Q_{2} Q_{1}}_{O^{\top}} A=R$, The product $Q=Q_{1}^{\top} Q_{2}^{\top} \cdots Q_{n}^{\top}$ is orthogonal
+    - The difference betweed Gram-Schmidt and Householder: Gram-schmidt is triangular orthogonalization, but Householder is orthogonal triangularization.
+
+    - The matrix $Q_k$ is chosen to introduce zeros below the diagonal in the k-th column while preserving all the zeros previously introduced.
+    - ![hd](/assets/img/am/hd.PNG)
+   
+    - Householder transformation
+        - Definition: $\mathbf{H}=\mathbf{I}-2 \mathbf{v} \mathbf{v}^{\top}$, where $\|\mathbf{v}\|_{2}=1$
+        - Proposition:
+            1. $\mathbf{H}=\mathbf{H}^{\top} \text { and } \mathbf{H}^{\top} \mathbf{H}=\mathbf{H}^{2}=\mathbf{I}$
+            2. $\|\mathbf{H x}\|_{2}=\|\mathbf{x}\|_{2}$
+            3. $\mathbf{H x}$ is a reflection of $\mathbf{x}$ with respect to $\operatorname{Span}\{\mathbf{v}\}^{\perp}$. That is, let $\mathbf{x}=\mathbf{x}_{1}+\mathbf{x}_{2}, \mathbf{x}_{1} \in \operatorname{Span}\{\mathbf{v}\}$ and $\mathbf{x}_{2} \in \operatorname{Span}\{\mathbf{v}\}^{\perp}$, then
+$\mathbf{H x}=\mathbf{x}_{1}-\mathbf{x}_{2}$
+        - Illustration:
+            - ![hd2](/assets/img/am/hd2.PNG)
+            - The introduce zeros into k-th column($\mathbf{x} \in \mathbb{R}^{m-k+1}$), the Householder transformation $F$ should:
+         $$
+\mathbf{x}=\left[\begin{array}{c}
+\times \\
+\times \\
+\vdots \\
+\times
+\end{array}\right] \stackrel{F}{\longrightarrow} F \mathbf{x}=\left[\begin{array}{c}
+\|\mathbf{x}\| \\
+0 \\
+\vdots \\
+0
+\end{array}\right]=\|\mathbf{x}\| \mathbf{e}_{1}=\alpha \mathbf{e}_{1}
+$$
+            - Every point $x \in \mathbb{R}^{m}$ is mapped to a mirror point: $F \mathbf{x}=\left(I-2 \frac{\mathbf{u u}^{\top}}{\mathbf{u}^{\top} \mathbf{u}}\right) \mathbf{x}=\mathbf{x}-2 \mathbf{u}\left(\frac{\mathbf{u}^{\top} \mathbf{x}}{\mathbf{u}^{\top} \mathbf{u}}\right)$ and hence $F=\left(I-2 \frac{\mathbf{u u}^{\top}}{\mathbf{u}^{\top} \mathbf{u}}\right)$
+        - The better of two Householder reflectors:
+            - ![hd3](/assets/img/am/hd3.PNG)
+        - For numerical stability pick the one that moves reflect $x$ to the vector $\|\mathbf{x}\| \mathbf{e}_{1}$ that is not to close to $\mathbf{x}$ itself, i.e., $-\|\mathbf{x}\| \mathbf{e}_{1}-\mathbf{x}$ in this case
+        - In other words, the better of the two reflectors is:
+            - $\mathbf{u}=\operatorname{sign}\left(x_{1}\right)\|\mathbf{x}\| \mathbf{e}_{1}+\mathbf{x}$, where $x_{1}$ is the first element of $x\left(\operatorname{sign}\left(x_{1}\right)=1\right.$ if $\left.x_{1}=0\right)$
+    - The processes of Householder QR factorization:
+        - Algorithm:
+        
+
+- **QR decomposition by Given rotation**
+Why do we need given rotation?
+If we use full QR to solve linear system $Ax = b$, we need to decompress $A$ into $QR$, it needs much time and memory. 
+$$
+\mathbf{Q}\left[\begin{array}{c}
+\mathbf{R} \\
+\mathbf{0}
+\end{array}\right] \mathbf{x}=\mathbf{b}
+$$
+Both sides times $Q^T$
+$$
+\begin{gathered}
+\mathbf{Q}^{T} \mathbf{Q}\left[\begin{array}{c}
+\mathbf{R} \\
+\mathbf{0}
+\end{array}\right] \mathbf{x}=\mathbf{Q}^{T} \mathbf{b} \\
+{\left[\begin{array}{c}
+\mathbf{R} \\
+\mathbf{0}
+\end{array}\right] \mathbf{x}=\mathbf{Q}^{T} \mathbf{b}} \\
+{\left[\begin{array}{c}
+\mathbf{R} \\
+\mathbf{0}
+\end{array}\right] \mathbf{x}=\left[\begin{array}{l}
+\mathbf{d} \\
+\mathbf{c}
+\end{array}\right]}
+\end{gathered}
+$$
+
+$$
+\mathbf{R} \mathbf{x}=\mathbf{d}(3)
+$$
+Equipped with given rotation, we don't need to calculate $Q$  
+To solve $Ax = b$, we multiple  givens matrix on both sides to get the same format above:
+$$
+\begin{aligned}
+&{\left[\begin{array}{cc}
+\cos \theta & -\sin \theta \\
+\sin \theta & \cos \theta
+\end{array}\right] \mathbf{A} \mathbf{x}=\left[\begin{array}{cc}
+\cos \theta & -\sin \theta \\
+\sin \theta & \cos \theta
+\end{array}\right] \mathbf{b}} \\
+&{\left[\begin{array}{cc}
+b_{11} & b_{12} \\
+0 & b_{22}
+\end{array}\right]\left[\begin{array}{l}
+x_{1} \\
+x_{2}
+\end{array}\right]=\left[\begin{array}{l}
+d_{1} \\
+d_{2}
+\end{array}\right]}
+\end{aligned}
+$$
+The main processes of Given rotation:
+1. From left to right deal with it columnwise
+2. For each column, we should process it from bottom to top.
+3. For given matrix, it is defined by the element(need to be 0) and digonal element.
+
 
 
 
@@ -189,6 +302,55 @@ This method is quite simple, but it has two main weaknesses:
 Both reduced QR and full QR can solve linear system:
 $$
 \hat{R} x=\hat{Q}^{T} b
+$$
+
+Full QR factorization
+$$
+A=\left[\begin{array}{ll}
+Q_{1} & Q_{2}
+\end{array}\right]\left[\begin{array}{c}
+R_{1} \\
+0
+\end{array}\right]
+$$
+Multiplication by orthogonal matrix
+$$
+\begin{aligned}
+\|A \mathbf{x}-\mathbf{y}\|^{2} &=\left\|\left[\begin{array}{ll}
+Q_{1} & Q_{2}
+\end{array}\right]\left[\begin{array}{c}
+R_{1} \\
+0
+\end{array}\right] \mathbf{x}-\mathbf{y}\right\|^{2} \\
+&=\left\|\left[\begin{array}{ll}
+Q_{1} & Q_{2}
+\end{array}\right]^{\top}\left[\begin{array}{ll}
+Q_{1} & Q_{2}
+\end{array}\right]\left[\begin{array}{c}
+R_{1} \\
+0
+\end{array}\right] \mathbf{x}-\left[\begin{array}{ll}
+Q_{1} & Q_{2}
+\end{array}\right]^{\top} \mathbf{y}\right\|^{2} \\
+&=\left\|\left[\begin{array}{c}
+R_{1} \mathbf{x}-Q_{1}^{\top} \mathbf{y} \\
+-Q_{2}^{\top} \mathbf{y}
+\end{array}\right]\right\|^{2} \\
+&=\left\|R_{1} \mathbf{x}-Q_{1}^{\top} \mathbf{y}\right\|^{2}+\left\|Q_{2}^{\top} \mathbf{y}\right\|^{2}
+\end{aligned}
+$$
+Least  squares minimization:
+$$
+\|A \mathbf{x}-\mathbf{y}\|^{2}=\left\|R_{1} \mathbf{x}-Q_{1}^{\top} \mathbf{y}\right\|^{2}+\left\|Q_{2}^{\top} \mathbf{y}\right\|^{2}
+$$
+
+Opimtal solution:
+$$
+\mathbf{x}_{l s}=R_{1}^{-1} Q_{1}^{\top} \mathbf{y}
+$$
+Residual of the optimal is:
+$$
+A \mathbf{x}_{ls}-\mathbf{y}=-Q_{2} Q_{2}^{\top} \mathbf{y}
 $$
 
 ####
