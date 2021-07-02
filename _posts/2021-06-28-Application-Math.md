@@ -193,7 +193,11 @@ $$
             - $\mathbf{u}=\operatorname{sign}\left(x_{1}\right)\|\mathbf{x}\| \mathbf{e}_{1}+\mathbf{x}$, where $x_{1}$ is the first element of $x\left(\operatorname{sign}\left(x_{1}\right)=1\right.$ if $\left.x_{1}=0\right)$
     - The processes of Householder QR factorization:
         - Algorithm:
-        
+        -   ![hd4](/assets/img/am/hd4.PNG)
+    - Example
+    ![hd5](/assets/img/am/hd4.PNG)
+    ![hd6](/assets/img/am/hd4.PNG)
+
 
 - **QR decomposition by Given rotation**
 Why do we need given rotation?
@@ -353,7 +357,12 @@ $$
 A \mathbf{x}_{ls}-\mathbf{y}=-Q_{2} Q_{2}^{\top} \mathbf{y}
 $$
 
-####
+### 5. Error Analysis
+ill-conditioned problem: if small variations in the data lead to very large variation in the solution.
+
+$A$ into $A(\varepsilon)=A+\varepsilon E$ and $b$ into $b+\varepsilon e$. The solution $x(\varepsilon)$ of perturbed system is such that:
+$(A+\varepsilon E) x(\varepsilon)=b+\varepsilon e$
+
 
 #### 3.1 Gaussian Elimination / the Cholesky decomposition
 Gaussian elimination with pivoting is equivalent to LU decomposition:
