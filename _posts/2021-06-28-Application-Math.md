@@ -195,8 +195,8 @@ $$
         - Algorithm:
         -   ![hd4](/assets/img/am/hd4.PNG)
     - Example
-    ![hd5](/assets/img/am/hd4.PNG)
-    ![hd6](/assets/img/am/hd4.PNG)
+    ![hd5](/assets/img/am/hd5.PNG)
+    ![hd6](/assets/img/am/hd6.PNG)
 
 
 - **QR decomposition by Given rotation**
@@ -360,10 +360,41 @@ $$
 ### 5. Error Analysis
 ill-conditioned problem: if small variations in the data lead to very large variation in the solution.
 
+#### 5.1 Perturbation Analysis
 $A$ into $A(\varepsilon)=A+\varepsilon E$ and $b$ into $b+\varepsilon e$. The solution $x(\varepsilon)$ of perturbed system is such that:
 $(A+\varepsilon E) x(\varepsilon)=b+\varepsilon e$
+Let $\delta(\varepsilon)=x(\varepsilon)-x$:
+$$(A + \varepsilon E)\delta(\varepsilon)= \varepsilon (e-Ex)$$
+$$\delta(\varepsilon)=\varepsilon (A+\varepsilon E)^{-1}(e-Ex)$$
+$x(\varepsilon)$ is differentiable at 0 and its derivative is:
+$$
+x^{\prime}(0)=\lim _{\varepsilon \rightarrow 0} \frac{\delta(\varepsilon)}{\varepsilon}=A^{-1}(e-E x)
+$$
+A small variation $[\varepsilon E, \varepsilon e]$ will cause the solution to vary by roughly $\varepsilon X^{\prime}(0)=\varepsilon A^{-1}(e-E x)$
+The relative variation is such that:
 
 
+
+### 6. Iterative Method
+
+#### 6.1 Basic concepts
+
+- Residual and Error
+    - error $e = u-v$, error indicates how far we are from the solution
+    - residual $r = f- Av$, $Au=f$ as $A(v+e)=f$ which means $Ae = f- Av$, so the residual can be writen as $Ae = r$, residual 
+    - residual correction: $u=v+e$
+
+#### 6.2 Steepest Descent
+A quadratic function of a vector with the form:
+$$
+f(x)=\frac{1}{2} x^{T} A x-b^{T} x+c
+$$
+
+The gradient of the quadratic form is given by(if A is symmetric)
+$$
+\nabla f(x)=\frac{1}{2} A^{T} x+\frac{1}{2} A x-b=A x-b
+$$
+Therefore, if $x$ is solution of the linear system $Ax=b$, then $\nabla f(x)$ is equal to  0 and x is a critical point of $f(x)$. If $A$ is positive definite, as well as symmetric, then this critical point is a minimun of $f(x)$. So $Ax=b$ can be solved by finding an $x$ that minimizes $f(x)$.
 #### 3.1 Gaussian Elimination / the Cholesky decomposition
 Gaussian elimination with pivoting is equivalent to LU decomposition:
 $$
@@ -374,5 +405,7 @@ $\Pi$ is a permutation matrix, L and U are lower and upper triangular.
 
 #### 3.2 Iterative solution
 
-## Lecture 2 Iterative Method to Linear equation System
+
+### Tensors
+
 
