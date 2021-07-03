@@ -408,4 +408,26 @@ $\Pi$ is a permutation matrix, L and U are lower and upper triangular.
 
 ### Tensors
 
+#### Eigenvector
+The number of zero eigrnvalues of the Laplacian matrix equals the number of connected components of the graph
 
+**Laplacian matrix**: $L=D-A$
+1. Total variation: $\mathbf{f}^{\mathrm{T}} \mathbf{L} \mathbf{f}=\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} w_{i j}\left(f_{i}-f_{j}\right)^{2}$
+2. Laplacian matrix is a symmetric non-negative matrix
+3. The smallest eigenvalue is 0 which corresponds to eigenvector $\mathbf{1}=[1, 1, ..., 1]$
+4. Laplacian matrix have n non-negative eigenvalues which satisify $0=\lambda_{1} \leq \lambda_{2} \leq \ldots \leq \lambda_{n}$
+
+[Proof](https://zhuanlan.zhihu.com/p/362416124)
+
+#### SVD
+$$
+A=U \Sigma V^{T}
+$$
+![svd](/assets/img/am/svd.PNG)
+U is a $m \times m$ matrix, $\Sigma$ is a $m \times n$ matrix, $V$ is a $n \times n$ matrix.
+For $\Sigma$, its  digonal elements are called singular values, other elements are zero values. $U^{T}U=I, V^{T}V=I$
+
+Process:
+1. For $A^TA$, we can get n eigenvalues and eigenvectors. Making use of these eigenvectors as $V$ 
+2. $A A^T$, we can get m eigenvalues and eigenvectors. Making use of these eigenvectors as $U$
+3. As for $\Sigma$, $A=U \Sigma V^{T} \Rightarrow A V=U \Sigma V^{T} V \Rightarrow A V=U \Sigma \Rightarrow A v_{i}=\sigma_{i} u_{i} \Rightarrow \sigma_{i}=A v_{i} / u_{i}$. Further, we can conclude $\sigma_{i}=\sqrt{\lambda_{i}}$, it is much easier to calculate singular values through the root of eigenvalues of $A^TA$ rather than $\sigma_{i}=A v_{i} / u_{i}$.
