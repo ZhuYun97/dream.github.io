@@ -431,3 +431,12 @@ Process:
 1. For $A^TA$, we can get n eigenvalues and eigenvectors. Making use of these eigenvectors as $V$ 
 2. $A A^T$, we can get m eigenvalues and eigenvectors. Making use of these eigenvectors as $U$
 3. As for $\Sigma$, $A=U \Sigma V^{T} \Rightarrow A V=U \Sigma V^{T} V \Rightarrow A V=U \Sigma \Rightarrow A v_{i}=\sigma_{i} u_{i} \Rightarrow \sigma_{i}=A v_{i} / u_{i}$. Further, we can conclude $\sigma_{i}=\sqrt{\lambda_{i}}$, it is much easier to calculate singular values through the root of eigenvalues of $A^TA$ rather than $\sigma_{i}=A v_{i} / u_{i}$.
+
+Properties:
+$$
+A_{m \times n}=U_{m \times m} \Sigma_{m \times n} V_{n \times n}^{T} \approx U_{m \times k} \Sigma_{k \times k} V_{k \times n}^{T}
+$$
+![svd2](/assets/img/am/svd2.PNG)
+
+- SVD can be used in PCA: covariance matrix $XX^T$ will be used for PCA dimension reduction, we need to find top-k biggest eigenvalues and corresponding eigenvectors.
+![svd3](/assets/img/am/svd3.PNG)
