@@ -420,6 +420,7 @@ The number of zero eigrnvalues of the Laplacian matrix equals the number of conn
 [Proof](https://zhuanlan.zhihu.com/p/362416124)
 
 #### SVD
+[materials](https://www.cnblogs.com/pinard/p/6251584.html)
 $$
 A=U \Sigma V^{T}
 $$
@@ -440,3 +441,36 @@ $$
 
 - SVD can be used in PCA: covariance matrix $XX^T$ will be used for PCA dimension reduction, we need to find top-k biggest eigenvalues and corresponding eigenvectors.
 ![svd3](/assets/img/am/svd3.PNG)
+
+#### Tensor Decomposition
+
+
+### Matrix Calculus
+[Materials](https://zhuanlan.zhihu.com/p/24709748)
+#### Categories
+1. 相对于数量变量的微分
+2. 相对于向量变量的微分
+    1. 数量函数的导数
+    2. 函数向量的导数
+
+
+#### 针对2.1类型的函数
+The gradient in multivariate calculus is also related to differentiation
+$$
+d f=\sum_{i=1}^{n} \frac{\partial f}{\partial x_{i}} d x_{i}=\frac{\partial f^{T}}{\partial x} d x
+$$
+
+Total differential $df$ is the inner product of derivate vector of $\frac{\partial f}{\partial x}$ and differential vector $dx$.
+In the similar way, we can relate Matrix derivate to differentiation.
+$$
+d f=\sum_{i=1}^{m} \sum_{j=1}^{n} \frac{\partial f}{\partial X_{i j}} d X_{i j}=\operatorname{tr}\left(\frac{\partial f^{T}}{\partial X} d X\right)
+$$
+$\operatorname{tr}\left(A^{T} B\right)=\sum_{i, j} A_{i j} B_{i j}$, the trace can represent the inner product of two matrices.
+Properties of matrix calculus:
+1. $d(X \pm Y)=d X \pm d Y$; $d(X Y)=(d X) Y+X d Y$; $d\left(X^{T}\right)=(d X)^{T}$; $d \operatorname{tr}(X)=\operatorname{tr}(d X)$ 
+
+#### 针对2.2类型的函数
+从向量引申到矩阵
+向量$f (p*1)$对向量$x (m*1)$的导数$\frac{\partial \boldsymbol{f}}{\partial \boldsymbol{x}}=\left[\begin{array}{cccc}\frac{\partial f_{1}}{\partial x_{1}} & \frac{\partial f_{2}}{\partial x_{1}} & \cdots & \frac{\partial f_{p}}{\partial x_{1}} \\ \frac{\partial f_{1}}{\partial x_{2}} & \frac{\partial f_{2}}{\partial x_{2}} & \cdots & \frac{\partial f_{p}}{\partial x_{2}} \\ \vdots & \vdots & \ddots & \vdots \\ \frac{\partial f_{1}}{\partial x_{m}} & \frac{\partial f_{2}}{\partial x_{m}} & \cdots & \frac{\partial f_{p}}{\partial x_{m}}\end{array}\right](\mathrm{m} \times \mathrm{p})$, 有$d \boldsymbol{f}=\frac{\partial \boldsymbol{f}^{T}}{\partial \boldsymbol{x}} d \boldsymbol{x}$；根据此公式，我们定义矩阵（按列优化）向量化$\operatorname{vec}(X)=\left[X_{11}, \ldots, X_{m 1}, X_{12}, \ldots, X_{m 2}, \ldots, X_{1 n}, \ldots, X_{m n}\right]^{T}(\operatorname{mn\times1})$，并定义矩阵F对矩阵X的导数$\frac{\partial F}{\partial X}=\frac{\partial \operatorname{vec}(F)}{\partial \operatorname{vec}(X)}(\mathrm{mn} \times \mathrm{pq})$，导数与微分有联系：$\operatorname{vec}(d F)=\frac{\partial F^{T}}{\partial X} \operatorname{vec}(d X)$
+
+$\frac{\partial F}{\partial X}=\frac{\partial \operatorname{vec}(F)}{\partial X}=\frac{\partial F}{\partial \operatorname{vec}(X)}=\frac{\partial \operatorname{vec}(F)}{\partial \operatorname{vec}(X)}$。求导时矩阵被向量化，弊端是这在一定程度破坏了矩阵的结构，会导致结果变得形式复杂；好处是多元微积分中关于梯度、Hessian矩阵的结论可以沿用过来，只需将矩阵向量化。
